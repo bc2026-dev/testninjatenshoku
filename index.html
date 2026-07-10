@@ -51,12 +51,12 @@
         .c3 { left: 50.8%; }
         .c4 { left: 74.4%; }
 
-        /* 【2枚目（統合エリア内）】4本の横長帯の縦位置調整 */
+        /* 【3枚目（lp003）】4本の横長帯の縦位置調整 */
         .fade-strip { left: 13.5%; width: 73%; }
-        .s1 { top: 85.5%; }   /* タイムライン画像の最下部（オフィス背景）に合わせた位置 */
-        .s2 { top: 88.0%; }  
-        .s3 { top: 90.5%; }  
-        .s4 { top: 93.0%; }  
+        .s1 { top: 3.6%; }   /* タイムライン画像の最下部（オフィス背景）に合わせた位置 */
+        .s2 { top: 20.2%; }  
+        .s3 { top: 36.8%; }  
+        .s4 { top: 53.4%; }  
 
         /* ーーー リッチな立体ボタンの共通スタイル（赤色バージョン） ーーー */
         .real-button {
@@ -88,7 +88,7 @@
                 0 4px 10px rgba(0,0,0,0.4);
         }
 
-/* ーーー 各種CTAボタンの位置調整（画像に対する％指定） ーーー */
+        /* ーーー 各種CTAボタンの位置調整（個別サイズ設定を維持） ーーー */
         
         /* 1枚目：冒頭の白背景・忍者エリアのファーストCTA */
         .btn-top-white-cta {
@@ -96,7 +96,7 @@
             height: 3.8%;
             left: 19%;
             top: 16.5%; 
-            font-size: max(16px, 3.5vw); /* 👈 【追加】このボタンだけの文字サイズ */
+            font-size: max(16px, 3.5vw); 
         }
 
         /* 1枚目：お悩みセクション直下のボタン */
@@ -104,8 +104,8 @@
             width: 57%;             
             height: 2%;           
             left: 4%;               
-            top: 56.5%;             
-            font-size: max(16px, 3.0vw); /* 👈 【追加】このボタンだけの文字サイズ */
+            top: 54.0%;             
+            font-size: max(16px, 3.0vw); 
         }
 
         /* 1枚目：強みサマリ下の登録ボタン（一番下） */
@@ -114,7 +114,7 @@
             height: 2%; 
             left: 5%; 
             bottom: 7.5%; 
-            font-size: max(16px, 3.5vw); /* 👈 【追加】このボタンだけの文字サイズ */
+            font-size: max(16px, 3.5vw); 
         }
 
         /* 2枚目：lp002（詳細タイムライン）内の各フェーズ用ボタン（4つ共通） */
@@ -122,30 +122,23 @@
             width: 70%;                  
             height: 2.2%;
             left: 15%;       
-            font-size: max(11px, 1.8vw); /* 👈 ここは枠からはみ出さないように、少し小さめにしておくのが安全です！ */
+            font-size: max(11px, 1.8vw); 
         }
-        .t1 { top: 18.0%; } 
-        .t2 { top: 38.5%; } 
-        .t3 { top: 59.0%; } 
-        .t4 { top: 80.0%; } 
+        .t1 { top: 19.5%; } 
+        .t2 { top: 44.0%; } 
+        .t3 { top: 67.5%; } 
+        .t4 { top: 91.0%; } 
 
-        /* 2枚目：最下部ボタン（白背景のエリアの中） */
+        /* 3枚目：最下部ボタン（画像 lp003.png 内の「白い余白」部分に％で重ねる調整） */
         .btn-page4 { 
             width: 90%;  
-            height: 100px;      
+            height: 12.5%;      /* 新しい lp003.png の縦幅に対するボタンの高さ比率（※適宜微調整してください） */
             left: 5%;    
-            top: 50%;          
-            transform: translateY(-50%); 
-            font-size: max(18px, 2.5vw); /* 👈 【追加】一番最後のボタンはさらに大きく！ */
-        }
-
-        /* 白背景用のクリック沈み込みアニメーション微調整 */
-        .btn-page4:active {
-            transform: translateY(-46px); 
+            bottom: 8.0%;       /* 画像の下部に新設された「白い余白」の真ん中に来るように配置 */
+            font-size: max(18px, 2.5vw); 
         }
     </style>
 
-    <!-- GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-78685DQX0F"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -154,7 +147,6 @@
         gtag('config', 'G-78685DQX0F');
     </script>
 
-    <!-- Meta Pixel -->
     <script>
         !function(f,b,e,v,n,t,s){
             if(f.fbq)return;
@@ -172,7 +164,6 @@
         fbq('track', 'PageView');
     </script>
 
-    <!-- 計測用スクリプト -->
     <script>
         function trackLine(label){
             gtag('event','line_click',{label:label});
@@ -182,63 +173,53 @@
 </head>
 <body>
 
-<!-- 1枚目：お悩み〜強みサマリ（白背景CTA＆強みカードアニメーション内包） -->
 <div class="lp-container" id="animation-section">
     <img src="lp001.png" class="lp-image" alt="忍者転職 メインセクション">
     
-    <!-- 冒頭の白背景・忍者エリアのファーストCTA -->
     <a class="real-button btn-top-white-cta"
        href="https://lin.ee/oNxrYEJ"
        onclick="trackLine('top_white_cta')"
        target="_blank">【1分】LINE無料相談！</a>
 
-    <!-- お悩みパート直下のCTA -->
     <a class="real-button btn-issue-cta"
        href="https://lin.ee/oNxrYEJ"
        onclick="trackLine('issue_cta')"
        target="_blank">【1分】LINE無料相談！</a>
 
-    <!-- 時間差でフワッと浮かび上がる4つの強みカード -->
     <img src="lp001_card1.png" class="fade-card c1" alt="強み1：1分で登録完了">
     <img src="lp001_card2.png" class="fade-card c2" alt="強み2：営業職の求人多数">
     <img src="lp001_card3.png" class="fade-card c3" alt="強み3：安心のトータルサポート">
     <img src="lp001_card4.png" class="fade-card c4" alt="強み4：新キャリアでの活躍の保証">
 
-    <!-- 強みカードの下の登録ボタン -->
     <a class="real-button btn-page2"
        href="https://lin.ee/oNxrYEJ"
        onclick="trackLine('page2')"
        target="_blank">【1分】LINE無料相談！</a>
 </div>
 
-<!-- 2枚目：詳細タイムライン＆サマリ横長帯セクション（統合して背景のダブりを解消！） -->
-<div class="lp-container" id="detail-section">
-    <!-- 背景は、下部にオフィスデザインが印刷されている lp002.png 1枚のみ -->
+<div class="lp-container">
     <img src="lp002.png" class="lp-image" alt="なぜ選ばれるのか詳細タイムライン">
     
-    <!-- タイムライン各フェーズのボタン -->
     <a class="real-button btn-timeline-cta t1" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_1')" target="_blank">さっそく【1分】で転職活動をスタートする</a>
     <a class="real-button btn-timeline-cta t2" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_2')" target="_blank">最速で転職活動を開始する</a>
     <a class="real-button btn-timeline-cta t3" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_3')" target="_blank">最短で内定が出る対策を受ける</a>
     <a class="real-button btn-timeline-cta t4" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_4')" target="_blank">入社後の最速出世キャリアを相談する</a>
+</div>
 
-    <!-- 画像の最下部（オフィス背景部分）に重なってフワッと動く4本の横長帯 -->
+<div class="lp-container" id="detail-section">
+    <img src="lp003.png" class="lp-image" alt="オフィスの背景と特設余白エリア">
+
     <img src="lp005_strip1.png" class="fade-strip s1" alt="LINE登録から約1分で無料キャリア相談">
     <img src="lp005_strip2.png" class="fade-strip s2" alt="3年後の将来を見据えて長期的キャリアアップを支援">
     <img src="lp005_strip3.png" class="fade-strip s3" alt="「転職は面倒」そんな作業は担当エージェントに丸投げOK！">
     <img src="lp005_strip4.png" class="fade-strip s4" alt="未経験でもOK！営業のプロによるマッチング">
 
-    <!-- 💡【新設】画像の最下部にピタッと結合する、真っ白な背景の特設エリア -->
-    <div style="background-color: #ffffff; width: 100%; height: 250px; position: relative; margin-top: -1px; line-height: normal;">
-        <!-- 一番最後の最下部ボタンを、この白背景の中に引っ越しさせました -->
-        <a class="real-button btn-page4"
-           href="https://lin.ee/oNxrYEJ"
-           onclick="trackLine('detail_cta')"
-           target="_blank">まずは【1分】LINEで無料キャリア相談</a>
-    </div>
+    <a class="real-button btn-page4"
+       href="https://lin.ee/oNxrYEJ"
+       onclick="trackLine('detail_cta')"
+       target="_blank">まずは【1分】LINEで無料キャリア相談</a>
 </div>
 
-<!-- アニメーション制御のJavaScript -->
 <script>
     // 1枚目の強みカード群の監視
     const section2 = document.getElementById('animation-section');
@@ -255,7 +236,7 @@
     }, { threshold: 0.1 });
     observer2.observe(section2);
 
-    // 2枚目下部（サマリ横長帯）の監視
+    // 3枚目（サマリ横長帯）の監視
     const section3 = document.getElementById('detail-section');
     const strips = document.querySelectorAll('.fade-strip');
     const observer3 = new IntersectionObserver((entries) => {
@@ -267,7 +248,7 @@
                 observer3.unobserve(section3); 
             }
         });
-    }, { threshold: 0.4 }); // 非常に縦に長い画像になったため、発火タイミングを調整
+    }, { threshold: 0.3 }); // 発火タイミングを適正化
     observer3.observe(section3);
 </script>
 
