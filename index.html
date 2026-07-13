@@ -164,12 +164,51 @@
         fbq('track', 'PageView');
     </script>
 
-    <script>
+<script>
+        // ① LINEボタンのクリック計測（場所の特定 ＆ MetaのAI学習）
         function trackLine(label){
-            gtag('event','line_click',{label:label});
-            fbq('trackCustom','LineClick',{label:label});
+            // GA4へ「どのボタンが押されたか」を送信
+            gtag('event', 'line_click', { 'label': label });
+            
+            // Metaへカスタムイベントとして送信（管理画面での確認用）
+            fbq('trackCustom', 'LineClick', { 'label': label });
+            
+            // MetaのAIに「LINE登録（成果）」として学習させるための標準イベント（Lead）
+            fbq('track', 'Lead', { content_name: label });
         }
+
+        // ② スクロール率（50% / 90%）の計測スクリプト
+        // 同じユーザーが何度も同じパーセンテージを送信しないようにする防衛策（フラグ）
+        let scrolled50 = false;
+        let scrolled90 = false;
+
+        window.addEventListener('scroll', function() {
+            // ページの総高さ、現在のスクロール位置、画面の表示領域の高さから計算
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (scrollableHeight <= 0) return; // スクロールできない場合は処理しない
+
+            const scrolledPercentage = (window.scrollY / scrollableHeight) * 100;
+
+            // 50%に達した瞬間（1回のみ発火）
+            if (scrolledPercentage >= 50 && !scrolled50) {
+                scrolled50 = true;
+                // GA4に送信
+                gtag('event', 'scroll_depth', { 'percentage': '50%' });
+                // Metaに送信（カスタムイベント）
+                fbq('trackCustom', 'ScrollDepth', { 'percentage': '50%' });
+            }
+
+            // 90%に達した瞬間（1回のみ発火）
+            if (scrolledPercentage >= 90 && !scrolled90) {
+                scrolled90 = true;
+                // GA4に送信
+                gtag('event', 'scroll_depth', { 'percentage': '90%' });
+                // Metaに送信（カスタムイベント）
+                fbq('trackCustom', 'ScrollDepth', { 'percentage': '90%' });
+            }
+        });
     </script>
+
 </head>
 <body>
 
