@@ -92,42 +92,42 @@
         
         /* 1枚目：冒頭の白背景・忍者エリアのファーストCTA */
         .btn-top-white-cta {
-            width: 57%;
+            width: 70%;
             height: 3.8%;
             left: 19%;
-            top: 16.5%; 
-            font-size: max(16px, 3.5vw); 
+            top: 9.0%; 
+            font-size: max(16px, 2.8vw); 
         }
 
         /* 1枚目：お悩みセクション直下のボタン */
         .btn-issue-cta { 
-            width: 57%;             
+            width: 70%;             
             height: 2%;           
             left: 4%;               
-            top: 54.0%;             
-            font-size: max(16px, 3.0vw); 
+            top: 42.0%;             
+            font-size: max(16px, 2.8vw); 
         }
 
         /* 1枚目：強みサマリ下の登録ボタン（一番下） */
         .btn-page2 { 
-            width: 70%; 
+            width: 80%; 
             height: 2%; 
-            left: 17%; 
-            bottom: 7.5%; 
-            font-size: max(16px, 3.5vw); 
+            left: 11%; 
+            bottom: 4.5%; 
+            font-size: max(16px, 2.8vw); 
         }
 
         /* 2枚目：lp002（詳細タイムライン）内の各フェーズ用ボタン（4つ共通） */
         .btn-timeline-cta {
-            width: 70%;                  
+            width: 77%;                  
             height: 2.2%;
             left: 15%;       
-            font-size: max(11px, 1.8vw); 
+            font-size: max(11px, 2.0vw); 
         }
-        .t1 { top: 19.5%; } 
-        .t2 { top: 44.0%; } 
-        .t3 { top: 67.5%; } 
-        .t4 { top: 91.0%; } 
+        .t1 { top: 21.5%; } 
+        .t2 { top: 46.0%; } 
+        .t3 { top: 69.5%; } 
+        .t4 { top: 94.0%; } 
 
         /* 3枚目：最下部ボタン（画像 lp003.png 内の「白い余白」部分に％で重ねる調整） */
         .btn-page4 { 
@@ -174,7 +174,7 @@
             fbq('trackCustom', 'LineClick', { 'label': label });
             
             // MetaのAIに「LINE登録（成果）」として学習させるための標準イベント（Lead）
-            fbq('track', 'Lead', { content_name: label });
+            fbq('track', 'SubmitApplication', { content_name: label });
         }
 
         // ② スクロール率（50% / 90%）の計測スクリプト
