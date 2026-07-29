@@ -44,21 +44,19 @@
             transform: translateY(0);
         }
 
-        /* 【1枚目】4枚の強みカードの配置調整（背景画像 lp001.png 内の最下部エリアに重ねる） */
-	/* 【1枚目】4枚の強みカードの配置調整（縦並びに変更） */
+        /* 【1枚目（lp001）】4枚の強みカードの配置調整 */
         .fade-card { 
-            width: 76%;       /* カードの横幅（背景画像に対しての割合。お好みで微調整してください） */
-            left: 12%;        /* 左右中央に配置 (100% - 76%) / 2 */
+            width: 76%;       /* カードの横幅 */
+            left: 12%;        /* 左右中央配置 */
         }
-        /* top（上からの位置）の％を調整して、縦に並べます */
         .c1 { top: 80.0%; }
         .c2 { top: 83.0%; }
         .c3 { top: 86.0%; }
         .c4 { top: 89.0%; }
 
-        /* 【3枚目（lp003）】4本の横長帯の縦位置調整 */
+        /* 【4枚目（lp004）】4本の横長帯の縦位置調整 */
         .fade-strip { left: 13.5%; width: 73%; }
-        .s1 { top: 7.6%; }   /* タイムライン画像の最下部（オフィス背景）に合わせた位置 */
+        .s1 { top: 7.6%; }   
         .s2 { top: 22.4%; }  
         .s3 { top: 37.2%; }  
         .s4 { top: 52.0%; }  
@@ -93,7 +91,7 @@
                 0 4px 10px rgba(0,0,0,0.4);
         }
 
-        /* ーーー 各種CTAボタンの位置調整（個別サイズ設定を維持） ーーー */
+        /* ーーー 各種CTAボタンの位置調整 ーーー */
         
         /* 1枚目：冒頭の白背景・忍者エリアのファーストCTA */
         .btn-top-white-cta {
@@ -134,12 +132,12 @@
         .t3 { top: 69.5%; } 
         .t4 { top: 94.0%; } 
 
-        /* 3枚目：最下部ボタン（画像 lp003.png 内の「白い余白」部分に％で重ねる調整） */
+        /* 3枚目：ステップ後ろボタン（新lp004.png 内の「白い余白」部分） */
         .btn-page4 { 
             width: 90%;  
-            height: 12.5%;      /* 新しい lp003.png の縦幅に対するボタンの高さ比率（※適宜微調整してください） */
+            height: 2.5%; 
             left: 5%;    
-            bottom: 8.0%;       /* 画像の下部に新設された「白い余白」の真ん中に来るように配置 */
+            bottom: 1.0%; 
             font-size: max(16px, 2.0vw); 
         }
     </style>
@@ -169,7 +167,7 @@
         fbq('track', 'PageView');
     </script>
 
-<script>
+    <script>
         // ① LINEボタンのクリック計測（場所の特定 ＆ MetaのAI学習）
         function trackLine(label){
             // GA4へ「どのボタンが押されたか」を送信
@@ -183,40 +181,34 @@
         }
 
         // ② スクロール率（50% / 90%）の計測スクリプト
-        // 同じユーザーが何度も同じパーセンテージを送信しないようにする防衛策（フラグ）
         let scrolled50 = false;
         let scrolled90 = false;
 
         window.addEventListener('scroll', function() {
-            // ページの総高さ、現在のスクロール位置、画面の表示領域の高さから計算
             const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-            if (scrollableHeight <= 0) return; // スクロールできない場合は処理しない
+            if (scrollableHeight <= 0) return;
 
             const scrolledPercentage = (window.scrollY / scrollableHeight) * 100;
 
             // 50%に達した瞬間（1回のみ発火）
             if (scrolledPercentage >= 50 && !scrolled50) {
                 scrolled50 = true;
-                // GA4に送信
                 gtag('event', 'scroll_depth', { 'percentage': '50%' });
-                // Metaに送信（カスタムイベント）
                 fbq('trackCustom', 'ScrollDepth', { 'percentage': '50%' });
             }
 
             // 90%に達した瞬間（1回のみ発火）
             if (scrolledPercentage >= 90 && !scrolled90) {
                 scrolled90 = true;
-                // GA4に送信
                 gtag('event', 'scroll_depth', { 'percentage': '90%' });
-                // Metaに送信（カスタムイベント）
                 fbq('trackCustom', 'ScrollDepth', { 'percentage': '90%' });
             }
         });
     </script>
-
 </head>
 <body>
 
+<!-- 1枚目：メインセクション -->
 <div class="lp-container" id="animation-section">
     <img src="lp001.png" class="lp-image" alt="忍者転職 メインセクション">
     
@@ -241,6 +233,7 @@
        target="_blank">【1分】LINE無料相談！</a>
 </div>
 
+<!-- 2枚目：詳細タイムライン -->
 <div class="lp-container">
     <img src="lp002.png" class="lp-image" alt="なぜ選ばれるのか詳細タイムライン">
     
@@ -250,18 +243,25 @@
     <a class="real-button btn-timeline-cta t4" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_4')" target="_blank">【1分】LINE無料相談！</a>
 </div>
 
+<!-- 3枚目（新設）：登録後ステップ1〜7 -->
+<div class="lp-container">
+    <img src="lp003.png" class="lp-image" alt="LINE登録後のステップ1〜7の流れ">
+    <a class="real-button btn-page4"
+       href="https://lin.ee/oNxrYEJ"
+       onclick="trackLine('detail_cta')"
+       target="_blank">まずは【1分】LINEで無料キャリア相談</a>
+</div>
+
+<!-- 4枚目（旧lp003）：オフィスの背景と特設余白エリア -->
 <div class="lp-container" id="detail-section">
-    <img src="lp003.png" class="lp-image" alt="オフィスの背景と特設余白エリア">
+    <img src="lp004.png" class="lp-image" alt="オフィスの背景と特設余白エリア">
 
     <img src="lp005_strip1.png" class="fade-strip s1" alt="LINE登録から約1分で無料キャリア相談">
     <img src="lp005_strip2.png" class="fade-strip s2" alt="3年後の将来を見据えて長期的キャリアアップを支援">
     <img src="lp005_strip3.png" class="fade-strip s3" alt="「転職は面倒」そんな作業は担当エージェントに丸投げOK！">
     <img src="lp005_strip4.png" class="fade-strip s4" alt="未経験でもOK！営業のプロによるマッチング">
 
-    <a class="real-button btn-page4"
-       href="https://lin.ee/oNxrYEJ"
-       onclick="trackLine('detail_cta')"
-       target="_blank">まずは【1分】LINEで無料キャリア相談</a>
+
 </div>
 
 <script>
@@ -280,7 +280,7 @@
     }, { threshold: 0.1 });
     observer2.observe(section2);
 
-    // 3枚目（サマリ横長帯）の監視
+    // 4枚目（サマリ横長帯）の監視
     const section3 = document.getElementById('detail-section');
     const strips = document.querySelectorAll('.fade-strip');
     const observer3 = new IntersectionObserver((entries) => {
@@ -292,7 +292,7 @@
                 observer3.unobserve(section3); 
             }
         });
-    }, { threshold: 0.3 }); // 発火タイミングを適正化
+    }, { threshold: 0.3 });
     observer3.observe(section3);
 </script>
 
