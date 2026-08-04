@@ -97,8 +97,8 @@
         .btn-top-white-cta {
             width: 70%;
             height: 2.8%;
-            left: 19%;
-            top: 9.0%; 
+            left: 16%;
+            top: 10.0%; 
             font-size: max(16px, 2.8vw); 
         }
 
@@ -167,44 +167,42 @@
         fbq('track', 'PageView');
     </script>
 
-    <script>
-        // ① LINEボタンのクリック計測（場所の特定 ＆ MetaのAI学習）
-        function trackLine(label){
-            // GA4へ「どのボタンが押されたか」を送信
-            gtag('event', 'line_click', { 'label': label });
-            
-            // Metaへカスタムイベントとして送信（管理画面での確認用）
-            fbq('trackCustom', 'LineClick', { 'label': label });
-            
-            // MetaのAIに「LINE登録（成果）」として学習させるための標準イベント（Lead）
-            fbq('track', 'SubmitApplication', { content_name: label });
+<script>
+    // ① LINEボタンのクリック計測（LPからLINEへの遷移）
+    function trackLine(label){
+        // GA4へ「どのボタンが押されたか」を送信
+        gtag('event', 'line_click', { 'label': label });
+        
+        // Metaへカスタムイベント送信（管理画面での確認用）
+        fbq('trackCustom', 'LineClick', { 'label': label });
+        
+        // Meta標準イベント：LP上のボタンタップ（中間コンバージョンとして記録）
+        fbq('track', 'Contact', { content_name: label });
+    }
+
+    // ② スクロール率（50% / 90%）の計測スクリプト（変更なし）
+    let scrolled50 = false;
+    let scrolled90 = false;
+
+    window.addEventListener('scroll', function() {
+        const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (scrollableHeight <= 0) return;
+
+        const scrolledPercentage = (window.scrollY / scrollableHeight) * 100;
+
+        if (scrolledPercentage >= 50 && !scrolled50) {
+            scrolled50 = true;
+            gtag('event', 'scroll_depth', { 'percentage': '50%' });
+            fbq('trackCustom', 'ScrollDepth', { 'percentage': '50%' });
         }
 
-        // ② スクロール率（50% / 90%）の計測スクリプト
-        let scrolled50 = false;
-        let scrolled90 = false;
-
-        window.addEventListener('scroll', function() {
-            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-            if (scrollableHeight <= 0) return;
-
-            const scrolledPercentage = (window.scrollY / scrollableHeight) * 100;
-
-            // 50%に達した瞬間（1回のみ発火）
-            if (scrolledPercentage >= 50 && !scrolled50) {
-                scrolled50 = true;
-                gtag('event', 'scroll_depth', { 'percentage': '50%' });
-                fbq('trackCustom', 'ScrollDepth', { 'percentage': '50%' });
-            }
-
-            // 90%に達した瞬間（1回のみ発火）
-            if (scrolledPercentage >= 90 && !scrolled90) {
-                scrolled90 = true;
-                gtag('event', 'scroll_depth', { 'percentage': '90%' });
-                fbq('trackCustom', 'ScrollDepth', { 'percentage': '90%' });
-            }
-        });
-    </script>
+        if (scrolledPercentage >= 90 && !scrolled90) {
+            scrolled90 = true;
+            gtag('event', 'scroll_depth', { 'percentage': '90%' });
+            fbq('trackCustom', 'ScrollDepth', { 'percentage': '90%' });
+        }
+    });
+</script>
 </head>
 <body>
 
