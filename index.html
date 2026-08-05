@@ -44,17 +44,17 @@
             transform: translateY(0);
         }
 
-        /* 【1枚目（lp001）】4枚の強みカードの配置調整 */
+        /* 4枚の強みカードの配置調整（畳背景セクション用） */
         .fade-card { 
             width: 76%;       /* カードの横幅 */
             left: 12%;        /* 左右中央配置 */
         }
-        .c1 { top: 80.0%; }
-        .c2 { top: 83.0%; }
-        .c3 { top: 86.0%; }
-        .c4 { top: 89.0%; }
+        .c1 { top: 15.0%; }
+        .c2 { top: 31.0%; }
+        .c3 { top: 47.0%; }
+        .c4 { top: 63.0%; }
 
-        /* 【4枚目（lp004）】4本の横長帯の縦位置調整 */
+        /* 4本の横長帯の縦位置調整 */
         .fade-strip { left: 13.5%; width: 73%; }
         .s1 { top: 7.6%; }   
         .s2 { top: 22.4%; }  
@@ -91,53 +91,59 @@
                 0 4px 10px rgba(0,0,0,0.4);
         }
 
-        /* ーーー 各種CTAボタンの位置調整 ーーー */
+        /* ーーー 各種CTAボタンの位置調整（セクション単位で位置調整してください） ーーー */
         
-        /* 1枚目：冒頭の白背景・忍者エリアのファーストCTA */
+        /* FV（ファーストビュー）ボタン */
         .btn-top-white-cta {
             width: 70%;
-            height: 2.8%;
-            left: 16%;
-            top: 10.0%; 
+            height: 8.0%;
+            left: 15%;
+            top: 40.0%; 
             font-size: max(16px, 2.8vw); 
         }
 
-        /* 1枚目：お悩みセクション直下のボタン */
+        /* お悩みセクション直下ボタン */
         .btn-issue-cta { 
-            width: 70%;             
-            height: 2%;           
-            left: 4%;               
-            top: 42.0%;             
+            width: 70%;              
+            height: 12.0%;           
+            left: 15%;                
+            bottom: 5.0%;             
             font-size: max(16px, 2.8vw); 
         }
 
-        /* 1枚目：強みサマリ下の登録ボタン（一番下） */
+        /* 畳背景セクション下ボタン */
         .btn-page2 { 
             width: 80%; 
-            height: 2%; 
-            left: 11%; 
-            bottom: 6.0%; 
+            height: 8.0%; 
+            left: 10%; 
+            bottom: 5.0%; 
             font-size: max(16px, 2.8vw); 
         }
 
-        /* 2枚目：lp002（詳細タイムライン）内の各フェーズ用ボタン（4つ共通） */
+	/* 選ばれる理由（其ノ一〜三）用ボタン共通 */
         .btn-timeline-cta {
-            width: 77%;                  
-            height: 2.2%;
-            left: 15%;       
+            width: 81%;                  
+            height: 8.0%;
+            left: 13.5%;       
+            bottom: 4.0%;
             font-size: max(16px, 2.8vw); 
         }
-        .t1 { top: 21.5%; } 
-        .t2 { top: 46.0%; } 
-        .t3 { top: 69.5%; } 
-        .t4 { top: 94.0%; } 
 
-        /* 3枚目：ステップ後ろボタン（新lp004.png 内の「白い余白」部分） */
+        /* 選ばれる理由（其ノ四）専用ボタン（画像サイズが異なるため個別調整） */
+        .btn-timeline-cta-4 {
+            width: 81%;                  
+            height: 8.0%;        /* ← 其ノ四の画像縦幅に合わせて％を調整してください */
+            left: 13.5%;       
+            bottom: 13.0%;        /* ← 其ノ四の画像縦幅に合わせて％を調整してください */
+            font-size: max(16px, 2.8vw); 
+        }
+
+        /* ステップセクション用ボタン */
         .btn-page4 { 
             width: 90%;  
-            height: 2.5%; 
+            height: 3.5%; 
             left: 5%;    
-            bottom: 2.0%; 
+            bottom: 1.0%; 
             font-size: max(16px, 2.0vw); 
         }
     </style>
@@ -168,62 +174,47 @@
     </script>
 
 <script>
-    // ① LINEボタンのクリック計測（LPからLINEへの遷移）
+    // LINEボタンのクリック計測（これだけ残します）
     function trackLine(label){
-        // GA4へ「どのボタンが押されたか」を送信
         gtag('event', 'line_click', { 'label': label });
-        
-        // Metaへカスタムイベント送信（管理画面での確認用）
         fbq('trackCustom', 'LineClick', { 'label': label });
-        
-        // Meta標準イベント：LP上のボタンタップ（中間コンバージョンとして記録）
         fbq('track', 'Contact', { content_name: label });
     }
-
-    // ② スクロール率（50% / 90%）の計測スクリプト（変更なし）
-    let scrolled50 = false;
-    let scrolled90 = false;
-
-    window.addEventListener('scroll', function() {
-        const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-        if (scrollableHeight <= 0) return;
-
-        const scrolledPercentage = (window.scrollY / scrollableHeight) * 100;
-
-        if (scrolledPercentage >= 50 && !scrolled50) {
-            scrolled50 = true;
-            gtag('event', 'scroll_depth', { 'percentage': '50%' });
-            fbq('trackCustom', 'ScrollDepth', { 'percentage': '50%' });
-        }
-
-        if (scrolledPercentage >= 90 && !scrolled90) {
-            scrolled90 = true;
-            gtag('event', 'scroll_depth', { 'percentage': '90%' });
-            fbq('trackCustom', 'ScrollDepth', { 'percentage': '90%' });
-        }
-    });
 </script>
 </head>
 <body>
 
-<!-- 1枚目：メインセクション -->
-<div class="lp-container" id="animation-section">
-    <img src="lp001.png" class="lp-image" alt="忍者転職 メインセクション">
-    
+<!-- 1. ファーストビュー（最優先読み込み：fetchpriority="high"） -->
+<div class="lp-container">
+    <img src="lp001_fv.png" class="lp-image" alt="忍者転職 ファーストビュー" fetchpriority="high">
     <a class="real-button btn-top-white-cta"
        href="https://lin.ee/oNxrYEJ"
        onclick="trackLine('top_white_cta')"
        target="_blank">【1分】LINE無料相談！</a>
+</div>
 
+<!-- 2. お悩みセクション -->
+<div class="lp-container">
+    <img src="lp002_issues.png" class="lp-image" alt="こんな悩みありませんか？" loading="lazy">
     <a class="real-button btn-issue-cta"
        href="https://lin.ee/oNxrYEJ"
        onclick="trackLine('issue_cta')"
        target="_blank">【1分】LINE無料相談！</a>
+</div>
 
-    <img src="lp001_card1.png" class="fade-card c1" alt="強み1：1分で登録完了">
-    <img src="lp001_card2.png" class="fade-card c2" alt="強み2：営業職の求人多数">
-    <img src="lp001_card3.png" class="fade-card c3" alt="強み3：安心のトータルサポート">
-    <img src="lp001_card4.png" class="fade-card c4" alt="強み4：新キャリアでの活躍の保証">
+<!-- 3. スピード宣言セクション -->
+<div class="lp-container">
+    <img src="lp003_speed.png" class="lp-image" alt="スピードに拘ります" loading="lazy">
+</div>
+
+<!-- 4. 4つの強み（畳背景＆アニメーションカード） -->
+<div class="lp-container" id="animation-section">
+    <img src="lp004_cards_bg.png" class="lp-image" alt="忍者転職の4つの強み背景" loading="lazy">
+
+    <img src="lp001_card1.png" class="fade-card c1" alt="強み1：1分で登録完了" loading="lazy">
+    <img src="lp001_card2.png" class="fade-card c2" alt="強み2：営業職の求人多数" loading="lazy">
+    <img src="lp001_card3.png" class="fade-card c3" alt="強み3：安心のトータルサポート" loading="lazy">
+    <img src="lp001_card4.png" class="fade-card c4" alt="強み4：新キャリアでの活躍の保証" loading="lazy">
 
     <a class="real-button btn-page2"
        href="https://lin.ee/oNxrYEJ"
@@ -231,67 +222,79 @@
        target="_blank">【1分】LINE無料相談！</a>
 </div>
 
-<!-- 2枚目：詳細タイムライン -->
+<!-- 5. 選ばれる理由 其ノ一 -->
 <div class="lp-container">
-    <img src="lp002.png" class="lp-image" alt="なぜ選ばれるのか詳細タイムライン">
-    
-    <a class="real-button btn-timeline-cta t1" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_1')" target="_blank">【1分】LINE無料相談！</a>
-    <a class="real-button btn-timeline-cta t2" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_2')" target="_blank">【1分】LINE無料相談！</a>
-    <a class="real-button btn-timeline-cta t3" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_3')" target="_blank">【1分】LINE無料相談！</a>
-    <a class="real-button btn-timeline-cta t4" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_4')" target="_blank">【1分】LINE無料相談！</a>
+    <img src="lp005_str1.png" class="lp-image" alt="選ばれる理由 其ノ一 圧倒的スピード" loading="lazy">
+    <a class="real-button btn-timeline-cta" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_1')" target="_blank">【1分】LINE無料相談！</a>
 </div>
 
-<!-- 3枚目（新設）：登録後ステップ1〜7 -->
+<!-- 6. 選ばれる理由 其ノ二 -->
 <div class="lp-container">
-    <img src="lp003.png" class="lp-image" alt="LINE登録後のステップ1〜7の流れ">
+    <img src="lp006_str2.png" class="lp-image" alt="選ばれる理由 其ノ二 怒涛の営業求人数" loading="lazy">
+    <a class="real-button btn-timeline-cta" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_2')" target="_blank">【1分】LINE無料相談！</a>
+</div>
+
+<!-- 7. 選ばれる理由 其ノ三 -->
+<div class="lp-container">
+    <img src="lp007_str3.png" class="lp-image" alt="選ばれる理由 其ノ三 爆速で内定獲得" loading="lazy">
+    <a class="real-button btn-timeline-cta" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_3')" target="_blank">【1分】LINE無料相談！</a>
+</div>
+
+<!-- 8. 選ばれる理由 其ノ四 -->
+<div class="lp-container">
+    <img src="lp008_str4.png" class="lp-image" alt="選ばれる理由 其ノ四 最速のキャリアパス" loading="lazy">
+    <a class="real-button btn-timeline-cta-4" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_4')" target="_blank">【1分】LINE無料相談！</a>
+</div>
+
+<!-- 9. 転職成功への7ステップ -->
+<div class="lp-container">
+    <img src="lp003.png" class="lp-image" alt="LINE登録後のステップ1〜7の流れ" loading="lazy">
     <a class="real-button btn-page4"
        href="https://lin.ee/oNxrYEJ"
        onclick="trackLine('detail_cta')"
        target="_blank">まずは【1分】LINEで無料キャリア相談</a>
 </div>
 
-<!-- 4枚目（旧lp003）：オフィスの背景と特設余白エリア -->
+<!-- 10. オフィス背景＆サマリ横長帯 -->
 <div class="lp-container" id="detail-section">
-    <img src="lp004.png" class="lp-image" alt="オフィスの背景と特設余白エリア">
+    <img src="lp004.png" class="lp-image" alt="オフィスの背景と特設エリア" loading="lazy">
 
-    <img src="lp005_strip1.png" class="fade-strip s1" alt="LINE登録から約1分で無料キャリア相談">
-    <img src="lp005_strip2.png" class="fade-strip s2" alt="3年後の将来を見据えて長期的キャリアアップを支援">
-    <img src="lp005_strip3.png" class="fade-strip s3" alt="「転職は面倒」そんな作業は担当エージェントに丸投げOK！">
-    <img src="lp005_strip4.png" class="fade-strip s4" alt="未経験でもOK！営業のプロによるマッチング">
-
-
+    <img src="lp005_strip1.png" class="fade-strip s1" alt="LINE登録から約1分で無料キャリア相談" loading="lazy">
+    <img src="lp005_strip2.png" class="fade-strip s2" alt="3年後の将来を見据えて長期的キャリアアップを支援" loading="lazy">
+    <img src="lp005_strip3.png" class="fade-strip s3" alt="「転職は面倒」そんな作業は担当エージェントに丸投げOK！" loading="lazy">
+    <img src="lp005_strip4.png" class="fade-strip s4" alt="未経験でもOK！営業のプロによるマッチング" loading="lazy">
 </div>
 
 <script>
-    // 1枚目の強みカード群の監視
-    const section2 = document.getElementById('animation-section');
+    // 4つの強みカード群の監視
+    const sectionCards = document.getElementById('animation-section');
     const cards = document.querySelectorAll('.fade-card');
-    const observer2 = new IntersectionObserver((entries) => {
+    const observerCards = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 cards.forEach((card, index) => {
                     setTimeout(() => { card.classList.add('active'); }, index * 200); 
                 });
-                observer2.unobserve(section2); 
+                observerCards.unobserve(sectionCards); 
             }
         });
     }, { threshold: 0.1 });
-    observer2.observe(section2);
+    if (sectionCards) observerCards.observe(sectionCards);
 
-    // 4枚目（サマリ横長帯）の監視
-    const section3 = document.getElementById('detail-section');
+    // サマリ横長帯の監視
+    const sectionStrips = document.getElementById('detail-section');
     const strips = document.querySelectorAll('.fade-strip');
-    const observer3 = new IntersectionObserver((entries) => {
+    const observerStrips = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 strips.forEach((strip, index) => {
                     setTimeout(() => { strip.classList.add('active'); }, index * 250); 
                 });
-                observer3.unobserve(section3); 
+                observerStrips.unobserve(sectionStrips); 
             }
         });
     }, { threshold: 0.3 });
-    observer3.observe(section3);
+    if (sectionStrips) observerStrips.observe(sectionStrips);
 </script>
 
 </body>
