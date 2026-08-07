@@ -13,7 +13,7 @@
   </p>
 
   <script>
-    const LIFF_ID = '2011013586-2J5vuC61';
+    const LIFF_ID = '2011013586-2J5vuC61'; // ★検証用LIFF ID（本番時は本番用に変更）
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbyikPGnheMxsZw5gU468bxTf7kShUZoT-DYeGbLFewJB4YRBMD0g0jADjNGd8FKqcf8/exec'; 
 
     async function main() {
@@ -49,12 +49,12 @@
           });
         }
 
-        // LINE画面を開いたままLIFFウィンドウを閉じる
-        liff.closeWindow();
+        // ★修正ポイント：閉じるのではなくLINE公式アカウント（友だち追加）へ移動させる
+        window.location.href = "https://lin.ee/oNxrYEJ";
 
       } catch (err) {
         console.error('LIFF Error:', err);
-        // エラー時の代替リダイレクト
+        // エラー時も同様に友だち追加URLへ
         window.location.href = "https://lin.ee/oNxrYEJ";
       }
     }
