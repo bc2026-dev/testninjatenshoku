@@ -31,7 +31,7 @@
             display: block;
         }
 
-        /* ーーー ふわっと動くアニメーション共通 ーーー */
+        /* ーーー ふわっと動くアニメーション共通（強みカード＆横長帯） ーーー */
         .fade-card, .fade-strip {
             position: absolute;
             opacity: 0; 
@@ -44,10 +44,10 @@
             transform: translateY(0);
         }
 
-        /* 4枚の強みカードの配置調整 */
+        /* 4枚の強みカードの配置調整（畳背景セクション用） */
         .fade-card { 
-            width: 76%;       
-            left: 12%;        
+            width: 76%;       /* カードの横幅 */
+            left: 12%;        /* 左右中央配置 */
         }
         .c1 { top: 15.0%; }
         .c2 { top: 31.0%; }
@@ -61,20 +61,20 @@
         .s3 { top: 37.2%; }  
         .s4 { top: 52.0%; }  
 
-        /* ーーー リッチな立体ボタンの共通スタイル ーーー */
+        /* ーーー リッチな立体ボタンの共通スタイル（赤色バージョン） ーーー */
         .real-button {
             position: absolute;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            background: linear-gradient(to right, #ff416c, #ff4b2b); /* 鮮やかな赤系グラデーション */
             color: #fff;
             font-weight: bold;
             text-decoration: none;
             border-radius: 50px; 
             box-shadow: 
                 inset 0 2px 3px rgba(255,255,255,0.4), 
-                0 6px 0 #b32000, 
+                0 6px 0 #b32000, /* 濃い赤の立体的な厚み */
                 0 10px 20px rgba(0,0,0,0.4);
             cursor: pointer;
             transition: all 0.1s ease;
@@ -91,13 +91,61 @@
                 0 4px 10px rgba(0,0,0,0.4);
         }
 
-        /* ボタン配置 */
-        .btn-top-white-cta { width: 70%; height: 8.0%; left: 15%; top: 40.0%; font-size: max(16px, 2.6vw); }
-        .btn-issue-cta { width: 70%; height: 12.0%; left: 15%; bottom: 5.0%; font-size: max(16px, 2.6vw); }
-        .btn-page2 { width: 80%; height: 8.0%; left: 10%; bottom: 5.0%; font-size: max(16px, 2.6vw); }
-        .btn-timeline-cta { width: 81%; height: 8.0%; left: 13.5%; bottom: 4.0%; font-size: max(16px, 2.6vw); }
-        .btn-timeline-cta-4 { width: 81%; height: 8.0%; left: 13.5%; bottom: 13.0%; font-size: max(16px, 2.6vw); }
-        .btn-page4 { width: 90%; height: 3.5%; left: 5%; bottom: 1.0%; font-size: max(16px, 2.6vw); }
+        /* ーーー 各種CTAボタンの位置調整（セクション単位で位置調整してください） ーーー */
+        
+        /* FV（ファーストビュー）ボタン */
+        .btn-top-white-cta {
+            width: 70%;
+            height: 8.0%;
+            left: 15%;
+            top: 40.0%; 
+            font-size: max(16px, 2.4vw); 
+        }
+
+        /* お悩みセクション直下ボタン */
+        .btn-issue-cta { 
+            width: 70%;              
+            height: 12.0%;           
+            left: 15%;                
+            bottom: 5.0%;             
+            font-size: max(16px, 2.6vw); 
+        }
+
+        /* 畳背景セクション下ボタン */
+        .btn-page2 { 
+            width: 80%; 
+            height: 8.0%; 
+            left: 10%; 
+            bottom: 5.0%; 
+            font-size: max(16px, 2.6vw); 
+        }
+
+        /* 選ばれる理由（其ノ一〜三）用ボタン共通 */
+        .btn-timeline-cta {
+            width: 81%;                  
+            height: 8.0%;
+            left: 13.5%;       
+            bottom: 4.0%;
+            font-size: max(16px, 2.6vw); 
+        }
+
+        /* 選ばれる理由（其ノ四）専用ボタン（画像サイズが異なるため個別調整） */
+        .btn-timeline-cta-4 {
+            width: 81%;                  
+            height: 8.0%;        /* ← 其ノ四の画像縦幅に合わせて％を調整してください */
+            left: 13.5%;       
+            bottom: 13.0%;        /* ← 其ノ四の画像縦幅に合わせて％を調整してください */
+            font-size: max(16px, 2.6vw); 
+        }
+
+        /* ステップセクション用ボタン */
+        .btn-page4 { 
+            width: 90%;  
+            height: 3.5%; 
+            left: 5%;    
+            bottom: 1.0%; 
+            font-size: max(16px, 2.6vw); 
+        }
     </style>
 
     <!-- Google Tag Manager -->
@@ -154,13 +202,14 @@
             const fbclid = getQueryParam('fbclid');
             const fbp = getCookie('_fbp');
 
-            // 遷移先URLの設定（パラメータを自動付与）
-            let targetUrl = "https://lin.ee/oNxrYEJ";
+            // 遷移先URLの設定（LIFF URLへパラメータを動的付与）
+            const LIFF_URL = "https://liff.line.me/2011013586-5JubKIbR";
             const params = [];
 
             if (fbclid) params.push("fbclid=" + encodeURIComponent(fbclid));
             if (fbp) params.push("fbp=" + encodeURIComponent(fbp));
 
+            let targetUrl = LIFF_URL;
             if (params.length > 0) {
                 targetUrl += "?" + params.join("&");
             }
@@ -178,7 +227,7 @@
 <div class="lp-container">
     <img src="lp001_fv.webp" width="1366" height="2604" class="lp-image" alt="忍者転職 ファーストビュー" fetchpriority="high">
     <a class="real-button btn-top-white-cta"
-       href="https://lin.ee/oNxrYEJ"
+       href="https://liff.line.me/2011013586-5JubKIbR"
        onclick="trackLine('top_white_cta', event)"
        target="_blank">【1分】LINEで働き方/求人をチェック</a>
 </div>
@@ -187,7 +236,7 @@
 <div class="lp-container">
     <img src="lp002_issues.webp" class="lp-image" alt="こんな悩みありませんか？" loading="lazy">
     <a class="real-button btn-issue-cta"
-       href="https://lin.ee/oNxrYEJ"
+       href="https://liff.line.me/2011013586-5JubKIbR"
        onclick="trackLine('issue_cta', event)"
        target="_blank">【1分】LINEで働き方/求人をチェック</a>
 </div>
@@ -207,7 +256,7 @@
     <img src="lp001_card4.webp" class="fade-card c4" alt="強み4：新キャリアでの活躍の保証" loading="lazy">
 
     <a class="real-button btn-page2"
-       href="https://lin.ee/oNxrYEJ"
+       href="https://liff.line.me/2011013586-5JubKIbR"
        onclick="trackLine('page2', event)"
        target="_blank">【1分】LINEで働き方/求人をチェック</a>
 </div>
@@ -215,32 +264,32 @@
 <!-- 5. 選ばれる理由 其ノ一 -->
 <div class="lp-container">
     <img src="lp005_str1.webp" class="lp-image" alt="選ばれる理由 其ノ一 圧倒的スピード" loading="lazy">
-    <a class="real-button btn-timeline-cta" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_1', event)" target="_blank">【1分】LINEで働き方/求人をチェック</a>
+    <a class="real-button btn-timeline-cta" href="https://liff.line.me/2011013586-5JubKIbR" onclick="trackLine('timeline_cta_1', event)" target="_blank">【1分】LINEで働き方/求人をチェック</a>
 </div>
 
 <!-- 6. 選ばれる理由 其ノ二 -->
 <div class="lp-container">
     <img src="lp006_str2.webp" class="lp-image" alt="選ばれる理由 其ノ二 怒涛の営業求人数" loading="lazy">
-    <a class="real-button btn-timeline-cta" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_2', event)" target="_blank">【1分】LINEで働き方/求人をチェック</a>
+    <a class="real-button btn-timeline-cta" href="https://liff.line.me/2011013586-5JubKIbR" onclick="trackLine('timeline_cta_2', event)" target="_blank">【1分】LINEで働き方/求人をチェック</a>
 </div>
 
 <!-- 7. 選ばれる理由 其ノ三 -->
 <div class="lp-container">
     <img src="lp007_str3.webp" class="lp-image" alt="選ばれる理由 其ノ三 爆速で内定獲得" loading="lazy">
-    <a class="real-button btn-timeline-cta" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_3', event)" target="_blank">【1分】LINEで働き方/求人をチェック</a>
+    <a class="real-button btn-timeline-cta" href="https://liff.line.me/2011013586-5JubKIbR" onclick="trackLine('timeline_cta_3', event)" target="_blank">【1分】LINEで働き方/求人をチェック</a>
 </div>
 
 <!-- 8. 選ばれる理由 其ノ四 -->
 <div class="lp-container">
     <img src="lp008_str4.webp" class="lp-image" alt="選ばれる理由 其ノ四 最速のキャリアパス" loading="lazy">
-    <a class="real-button btn-timeline-cta-4" href="https://lin.ee/oNxrYEJ" onclick="trackLine('timeline_cta_4', event)" target="_blank">【1分】LINEで働き方/求人をチェック</a>
+    <a class="real-button btn-timeline-cta-4" href="https://liff.line.me/2011013586-5JubKIbR" onclick="trackLine('timeline_cta_4', event)" target="_blank">【1分】LINEで働き方/求人をチェック</a>
 </div>
 
 <!-- 9. 転職成功への7ステップ -->
 <div class="lp-container">
     <img src="lp003.webp" class="lp-image" alt="LINE登録後のステップ1〜7の流れ" loading="lazy">
     <a class="real-button btn-page4"
-       href="https://lin.ee/oNxrYEJ"
+       href="https://liff.line.me/2011013586-5JubKIbR"
        onclick="trackLine('detail_cta', event)"
        target="_blank">まずは【1分】LINEで働き方/求人をチェック</a>
 </div>

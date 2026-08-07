@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINEへ移動中...</title>
+  <!-- LIFF SDK -->
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <p style="text-align: center; margin-top: 50px; font-family: sans-serif; color: #666;">
+    LINEへ移動しています...
+  </p>
+
+  <script>
+    const LIFF_ID = '2011013586-5JubKIbR';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyikPGnheMxsZw5gU468bxTf7kShUZoT-DYeGbLFewJB4YRBMD0g0jADjNGd8FKqcf8/exec'; 
+
+    async function main() {
+      try {
+        await liff.init({ liffId: LIFF_ID });
+
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
+
+        // ユーザーのLINE IDを取得
+        const profile = await liff.getProfile();
+        const userId = profile.userId;
+
+        // URLパラメータ（fbclid / fbp）を取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const fbclid = urlParams.get('fbclid');
+        const fbp = urlParams.get('fbp');
+
+        // GASへ userId と fbclid を即時送信
+        if (fbclid || fbp) {
+          await fetch(GAS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type: 'liff_lead',
+              userId: userId,
+              fbclid: fbclid,
+              fbp: fbp
+            })
+          });
+        }
+
+        // LINE画面を開いたままLIFFウィンドウを閉じる
+        liff.closeWindow();
+
+      } catch (err) {
+        console.error('LIFF Error:', err);
+        // エラー時の代替リダイレクト
+        window.location.href = "https://lin.ee/oNxrYEJ";
+      }
+    }
+
+    main();
+  </script>
+</body>
+</html>
