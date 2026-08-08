@@ -4,58 +4,115 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LINEへ移動中...</title>
-  <!-- LIFF SDK -->
   <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 <body>
-  <p style="text-align: center; margin-top: 50px; font-family: sans-serif; color: #666;">
+  <p id="status" style="text-align:center;margin-top:50px;font-family:sans-serif;color:#666;">
     LINEへ移動しています...
   </p>
 
   <script>
-    const LIFF_ID = '2011013586-2J5vuC61'; // ★検証用LIFF ID（本番時は本番用に変更）
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyikPGnheMxsZw5gU468bxTf7kShUZoT-DYeGbLFewJB4YRBMD0g0jADjNGd8FKqcf8/exec'; 
+    const CONFIG = Object.freeze({
+      LIFF_ID: '2011013586-2J5vuC61',
+      ENVIRONMENT: 'test',
+      GAS_URL: 'https://script.google.com/macros/s/AKfycbw0s0PSru_HXh_yw_1zmDEApf_o5lD_KcHrgmmZugr41wO73kdgKirAABsDsSS2bo40/exec',
+      LINE_FRIEND_URL: 'https://lin.ee/oNxrYEJ',
+      STORAGE_KEY: 'ninja_meta_tracking_test'
+    });
+
+    let hasStarted = false;
+
+    function getTrackingParams() {
+      const directParams = new URLSearchParams(window.location.search);
+      let stateParams = new URLSearchParams();
+      const liffState = directParams.get('liff.state');
+
+      if (liffState) {
+        try {
+          const decoded = decodeURIComponent(liffState);
+          const query = decoded.includes('?') ? decoded.split('?').slice(1).join('?') : decoded;
+          stateParams = new URLSearchParams(query);
+        } catch (error) {
+          console.warn('liff.state parse error:', error);
+        }
+      }
+
+      function pick(name) {
+        return directParams.get(name) || stateParams.get(name) || '';
+      }
+
+      return {
+        fbclid: pick('fbclid'),
+        fbc: pick('fbc'),
+        fbp: pick('fbp'),
+        ctaLocation: pick('cta_location'),
+        landingTime: pick('landing_time')
+      };
+    }
+
+    function saveTrackingParams(params) {
+      const existing = loadTrackingParams();
+      const merged = Object.assign({}, existing, params);
+      sessionStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(merged));
+      return merged;
+    }
+
+    function loadTrackingParams() {
+      try {
+        return JSON.parse(sessionStorage.getItem(CONFIG.STORAGE_KEY) || '{}');
+      } catch (error) {
+        return {};
+      }
+    }
+
+    async function sendLiffTouch(userId, tracking) {
+      const payload = {
+        type: 'liff_touch',
+        userId: userId,
+        fbclid: tracking.fbclid || '',
+        fbc: tracking.fbc || '',
+        fbp: tracking.fbp || '',
+        ctaLocation: tracking.ctaLocation || '',
+        landingTime: tracking.landingTime || '',
+        liffTime: Date.now(),
+        environment: CONFIG.ENVIRONMENT
+      };
+
+      await fetch(CONFIG.GAS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify(payload),
+        keepalive: true
+      });
+    }
+
+    function goToFriendAdd() {
+      window.location.replace(CONFIG.LINE_FRIEND_URL);
+    }
 
     async function main() {
+      if (hasStarted) return;
+      hasStarted = true;
+
       try {
-        await liff.init({ liffId: LIFF_ID });
+        const tracking = saveTrackingParams(getTrackingParams());
+        await liff.init({ liffId: CONFIG.LIFF_ID });
 
         if (!liff.isLoggedIn()) {
-          liff.login();
+          hasStarted = false;
+          liff.login({ redirectUri: window.location.href });
           return;
         }
 
-        // ユーザーのLINE IDを取得
         const profile = await liff.getProfile();
-        const userId = profile.userId;
-
-        // URLパラメータ（fbclid / fbp）を取得
-        const urlParams = new URLSearchParams(window.location.search);
-        const fbclid = urlParams.get('fbclid');
-        const fbp = urlParams.get('fbp');
-
-        // GASへ userId と fbclid を即時送信
-        if (fbclid || fbp) {
-          await fetch(GAS_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              type: 'liff_lead',
-              userId: userId,
-              fbclid: fbclid,
-              fbp: fbp
-            })
-          });
-        }
-
-        // ★修正ポイント：閉じるのではなくLINE公式アカウント（友だち追加）へ移動させる
-        window.location.href = "https://lin.ee/oNxrYEJ";
-
-      } catch (err) {
-        console.error('LIFF Error:', err);
-        // エラー時も同様に友だち追加URLへ
-        window.location.href = "https://lin.ee/oNxrYEJ";
+        await sendLiffTouch(profile.userId, tracking);
+        sessionStorage.removeItem(CONFIG.STORAGE_KEY);
+        goToFriendAdd();
+      } catch (error) {
+        console.error('LIFF error:', error);
+        document.getElementById('status').textContent = 'LINEへ移動します...';
+        window.setTimeout(goToFriendAdd, 500);
       }
     }
 
