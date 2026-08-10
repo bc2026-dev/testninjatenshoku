@@ -75,7 +75,8 @@
         ctaLocation: tracking.ctaLocation || '',
         landingTime: tracking.landingTime || '',
         liffTime: Date.now(),
-        environment: CONFIG.ENVIRONMENT
+        environment: CONFIG.ENVIRONMENT,
+        clientUserAgent: navigator.userAgent || ''
       };
 
       await fetch(CONFIG.GAS_URL, {
